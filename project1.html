@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Chat Bot with Google Custom Search</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+            margin: 0;
+        }
+        #chat-container {
+            width: 600px;
+            height: 80vh;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        #chat-header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: center;
+        }
+        #chat-box {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message {
+            padding: 10px 15px;
+            border-radius: 10px;
+            max-width: 75%;
+            line-height: 1.4;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .user {
+            background-color: #e0e0e0;
+            align-self: flex-end;
+        }
+        .bot {
+            background-color: #e6f7ff;
+            align-self: flex-start;
+        }
+        .bot a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .bot a:hover {
+            text-decoration: underline;
+        }
+        #input-container {
+            display: flex;
+            border-top: 1px solid #ddd;
+            padding: 15px;
+            background-color: #f8f8f8;
+        }
+        #user-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        #send-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-left: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+        .spinner {
+            margin: 0 auto;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-top: 3px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #auth-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        #auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        #auth-form input {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 200px;
+        }
+        #auth-form button {
+            padding: 10px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #auth-form button:hover {
+            background-color: #0056b3;
+        }
+        .copy-button {
+            align-self: flex-end;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .copy-button:hover {
+            background-color: #0056b3;
+        }
+        #history-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 600px;
+            height: 80vh;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        #history-header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: center;
+        }
+        #history-box {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        #clear-history-button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #clear-history-button:hover {
+            background-color: #ff1a1a;
+        }
+    </style>
+</head>
+<body>
+    <div id="auth-container">
+        <h2 id="auth-header">Sign Up</h2>
+        <form id="auth-form">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="button" id="auth-button">Submit</button>
+        </form>
+    </div>
+    <!-- Chatbot Interface -->
+    <div id="chat-container" style="display: none;">
+        <div id="chat-header">Samukelo's AI</div>
+        <div id="chat-box"></div>
+        <div id="input-container">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+        </div>
+        <button id="clear-chat-button">Clear Chat</button>
+        <button id="show-history-button">Show History</button>
+    </div>
+    <!-- Chat History Interface -->
+    <div id="history-container">
+        <div id="history-header">Chat History</div>
+        <div id="history-box"></div>
+        <button id="clear-history-button">Clear History</button>
+        <button id="back-to-chat-button">Back to Chat</button>
+    </div>
+
+    <script>
+        const users = JSON.parse(localStorage.getItem('users')) || {};
+        let currentUser = localStorage.getItem('currentUser');
+
+        if (!currentUser) {
+            document.getElementById('auth-container').style.display = 'flex';
+        } else {
+            document.getElementById('chat-container').style.display = 'flex';
+        }
+
+        document.getElementById('auth-button').addEventListener('click', () => {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (users[username]) {
+                alert('Username already exists. Please log in.');
+                return;
+            }
+
+            users[username] = { password, chats: [] };
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('currentUser', username);
+            alert('Congratulations! You have signed up successfully.');
+            currentUser = username;
+            document.getElementById('auth-container').style.display = 'none';
+            document.getElementById('chat-container').style.display = 'flex';
+        });
+
+        async function sendMessage() {
+            const userInput = document.getElementById('user-input').value;
+            if (userInput === '') return;
+
+            displayMessage(userInput, 'user');
+            document.getElementById('user-input').value = '';
+            displaySpinner();
+
+            try {
+                const response = await getGoogleSearchResponse(userInput);
+                displayMessage(response, 'bot');
+                saveChat(userInput, response);
+            } catch (error) {
+                console.error('Error receiving response:', error);
+                displayMessage('Sorry, I couldn\'t fetch that information right now.', 'bot');
+            } finally {
+                removeSpinner();
+            }
+        }
+
+        function displayMessage(message, sender) {
+            const chatBox = document.getElementById('chat-box');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+
+            if (sender === 'bot' && message.includes('Press More')) {
+                const [mainMessage, additionalInfo] = message.split('Press More');
+                const mainText = document.createElement('div');
+                mainText.textContent = mainMessage.trim();
+                messageElement.appendChild(mainText);
+
+                const moreButton = document.createElement('button');
+                moreButton.textContent = 'Press More';
+                moreButton.classList.add('copy-button');
+                moreButton.addEventListener('click', () => {
+                    mainText.textContent = message.trim();
+                    moreButton.style.display = 'none';
+                });
+                messageElement.appendChild(moreButton);
+            } else {
+                messageElement.textContent = message;
+            }
+
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function displaySpinner() {
+            const chatBox = document.getElementById('chat-box');
+            const spinner = document.createElement('div');
+            spinner.classList.add('spinner');
+            spinner.id = 'spinner';
+            chatBox.appendChild(spinner);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function removeSpinner() {
+            const spinner = document.getElementById('spinner');
+            if (spinner) spinner.remove();
+        }
+
+        async function getGoogleSearchResponse(query) {
+            const apiKey = 'AIzaSyBJCJPv4nKfCIqyZJ3NT5G7-DWCKiWSNQU';
+            const searchEngineId = '67ffdd6b74bdc47b6';
+            const apiUrl = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(query)}&key=${apiKey}&cx=${searchEngineId}`;
+            
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            const items = data.items || [];
+            const firstResult = items[0] ? items[0].snippet : 'No results found';
+            return firstResult + ' Press More for additional information.';
+        }
+
+        document.getElementById('send-button').addEventListener('click', sendMessage);
+        document.getElementById('user-input').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function saveChat(userInput, botResponse) {
+            users[currentUser].chats.push({ user: userInput, bot: botResponse });
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        function clearChat() {
+            document.getElementById('chat-box').innerHTML = '';
+        }
+
+        document.getElementById('clear-chat-button').addEventListener('click', clearChat);
+
+        function showHistory() {
+            const historyBox = document.getElementById('history-box');
+            historyBox.innerHTML = '';
+
+            const userChats = users[currentUser].chats || [];
+            userChats.forEach(chat => {
+                const userMessage = document.createElement('div');
+                userMessage.classList.add('message', 'user');
+                userMessage.textContent = chat.user;
+
+                const botMessage = document.createElement('div');
+                botMessage.classList.add('message', 'bot');
+                botMessage.textContent = chat.bot;
+
+                historyBox.appendChild(userMessage);
+                historyBox.appendChild(botMessage);
+            });
+
+            document.getElementById('chat-container').style.display = 'none';
+            document.getElementById('history-container').style.display = 'flex';
+        }
+
+        document.getElementById('show-history-button').addEventListener('click', showHistory);
+
+        function clearHistory() {
+            users[currentUser].chats = [];
+            localStorage.setItem('users', JSON.stringify(users));
+            document.getElementById('history-box').innerHTML = '';
+            alert('Chat history cleared.');
+        }
+
+        document.getElementById('clear-history-button').addEventListener('click', clearHistory);
+
+        document.getElementById('back-to-chat-button').addEventListener('click', () => {
+            document.getElementById('history-container').style.display = 'none';
+            document.getElementById('chat-container').style.display = 'flex';
+        });
+    </script>
+    <h5>in order for this to run on your device get a Google API code and Google search engineID</h5>
+
+</body>
+</html>

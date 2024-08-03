@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #121212;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    background: #1e1e1e;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #00bcd4;
+}
+
+.buttons {
+    margin-bottom: 2rem;
+}
+
+button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+button#start-recognition {
+    background: #00bcd4;
+    color: #121212;
+}
+
+button#start-recognition:hover {
+    background: #0097a7;
+    transform: scale(1.05);
+}
+
+button#stop-recognition {
+    background: #f44336;
+    color: #121212;
+}
+
+button#stop-recognition:hover {
+    background: #d32f2f;
+    transform: scale(1.05);
+}
+
+#notes {
+    background: #1e1e1e;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+#notes h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #00bcd4;
+}
+
+#notes-list {
+    list-style: none;
+    text-align: left;
+}
+
+#notes-list li {
+    background: #2e2e2e;
+    padding: 0.75rem;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

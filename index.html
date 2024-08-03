@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="mediaqueries.css">
+    <title>SamuCodes</title>
+    <style>
+        /* Add styles for the bubble effect */
+        .details-container {
+            border-radius: 15px;
+            padding: 20px;
+            background: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Ensure the bubble effect fits within the container */
+        .about-containers,
+        .projects-container,
+        .contact-info-upper-container,
+        .languages-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Desktop Navigation -->
+    <nav id="desktop-nav">
+        <div class="logo">Samukelo Magagula</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#languages">Languages</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li>
+                <a href="https://github.com/SamukeloMagagula" target="_blank">
+                    <img src="github.png" alt="GitHub" class="icon">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.instagram.com/sxmukelo" target="_blank">
+                    <img src="instagram.png" alt="Instagram" class="icon">
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Hamburger Navigation -->
+    <nav id="hamburger-nav">
+        <div class="logo">Samukelo Magagula</div>
+        <div class="hamburger-menu">
+            <div class="hamburger-icon" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="menu-links">
+                <li><a href="#about" onclick="toggleMenu()">About</a></li>
+                <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
+                <li><a href="#languages" onclick="toggleMenu()">Languages</a></li>
+                <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+            </div>
+        </div>
+    </nav>
+
+    <header>
+        <button id="mode-toggle" class="btn btn-color-2">Switch Mode</button>
+    </header>
+
+    <section id="hero" class="section-container">
+        <div class="section__pic-container">
+            <img src="samu.jpg" alt="Samukelo" class="profile-pic">
+        </div>
+        <div class="hero-text section__text">
+            <h2>Hi, I'm Samukelo Magagula</h2>
+            <p>An aspiring Software Developer and Future DevOps Engineer.</p>
+        </div>
+    </section>
+
+    <section id="about" class="section-container">
+        <h3>About</h3>
+        <div class="about-containers">
+            <div class="about-details-container details-container">
+                <p>Hello, my name is Samukelo Magagula. I am a driven and passionate individual with a strong love for coding and technology. Currently, I am a university student, eager to carve my path in the tech industry, with a particular focus on artificial intelligence, DevOps, and more.</p>
+                <p>I founded a business called SudoCode, inspired by the concepts of pseudocode and Sudoku. SudoCode specializes in cutting-edge fields such as artificial intelligence, cloud engineering, and both front-end and back-end web design. Our mission is to make a significant impact on the world through innovative technology solutions.</p>
+                <p>Stay tuned for exciting future projects from SudoCode, which will be showcased on my GitHub. I am committed to continuously learning and growing in this dynamic field, and I look forward to contributing to groundbreaking advancements in technology.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="section-container">
+        <h3>Projects</h3>
+        <div class="projects-container">
+            <div class="project details-container">
+                <h4 class="project-title">Samukelo's A.I</h4>
+                <p>I created an interactive chatbot interface that allows users to enter queries, leveraging the Google Custom Search API to fetch and display relevant search results in the chat box. The design ensures a user-friendly experience with a visually appealing layout and responsive interaction. Key features include real-time interaction, where users receive instant responses; dynamic content display with formatted search results including titles, snippets, and clickable links; and a loading indicator that shows a spinner animation while fetching data. Flexible input handling allows users to submit queries by clicking the "Send" button or pressing the Enter key, enhancing convenience. Error handling mechanisms manage API errors gracefully, ensuring users are informed if something goes wrong. The interface is styled with modern CSS, providing a clean, minimalist design that looks good on various devices. Overall, this chatbot interface is both functional and enhances user experience through thoughtful design and interaction elements.</p>
+                <p><a href="project1.html"><button class="btn btn-color-1 project-btn">View Project</button></a></p>
+            </div>
+            <div class="project details-container">
+                <h4 class="project-title">Project 2</h4>
+                <p>The Voice Recognition Notes tool is a web-based application that leverages the Web Speech API to facilitate the creation of text notes through voice input. Users can initiate voice recognition by clicking the "Start Recognition" button, which activates continuous listening and transcription of spoken words into text. The transcribed text is then displayed as individual notes on the web page. Users can stop the voice recognition at any time by clicking the "Stop Recognition" button, pausing the transcription process. This tool offers an efficient and hands-free method for taking notes, making it ideal for individuals who prefer dictation over traditional typing. The user interface is simple and intuitive, ensuring a seamless experience for users to capture their thoughts and ideas quickly and effectively.</p>
+                <p><a href="app.html"><button class="btn btn-color-1 project-btn">View Project</button></a></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="languages" class="section-container">
+        <h3>Languages I Specialize In</h3>
+        <div class="languages-container">
+            <div class="languages-logos details-container">
+                <img src="java-logo.png" alt="Java" class="language-logo">
+                <img src="webgl.jpeg" alt="WebGL" class="language-logo">
+                <img src="cpp-logo.png" alt="C++" class="language-logo">
+                <img src="js.jpeg" alt="JavaScript" class="language-logo">
+                <img src="css-logo.jpeg" alt="CSS" class="language-logo">
+                <img src="html-logo.jpeg" alt="HTML" class="language-logo">
+                <img src="py.jpeg" alt="Python" class="language-logo">
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section-container">
+        <h3>Contact Me</h3>
+        <div class="contact-info-upper-container details-container">
+            <div class="contact-info-container">
+                <img src="mail.jpeg" alt="Email" class="icon email-icon">
+                <p>You can reach me at <a href="mailto:samukelogucci@gmail.com">samukelogucci@gmail.com</a>.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Samukelo Magagula</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
